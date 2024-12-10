@@ -1,0 +1,957 @@
+/* Fix viewport and scaling */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Desktop zoom effect - preserve all other styles */
+@media screen and (min-width: 1024px) {
+    html, body {
+        overflow: hidden; /* Only hide overflow on desktop */
+    }
+    
+    body {
+        transform: scale(0.67);
+        transform-origin: top left;
+        width: 149.25373134328358%;
+        height: 149.25373134328358%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow-x: hidden;
+    }
+
+    .page-wrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .container {
+        margin: 2rem auto;
+    }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 1023px) {
+    html, body {
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-y: auto; /* Allow vertical scroll */
+        height: auto; /* Allow content to determine height */
+    }
+
+    .container {
+        padding: var(--spacing-md);
+    }
+}
+
+/* Update container styles */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: var(--spacing-lg);
+    position: relative;
+}
+
+:root {
+    /* Colors */
+    --primary-color: #ffffff;
+    --secondary-color: #6d7f99;
+    --background-color: #0a0a0f;
+    --container-bg: rgba(10, 12, 18, 0.95);
+    --container-border: rgba(38, 43, 54, 0.3);
+    --dark-fire: #1a237e;
+    --dark-fire-glow: #3949ab;
+    --dark-fire-accent: #000051;
+    --container-glow: 0 0 30px rgba(26, 35, 126, 0.15);
+    --text-glow: 0 0 10px rgba(26, 35, 126, 0.4);
+    --hover-bg: rgba(32, 87, 255, 0.05);
+    --gradient-start: rgba(32, 87, 255, 0.1);
+    --gradient-end: rgba(13, 19, 33, 0.95);
+    --blue-fire: #007fff;
+    --blue-fire-glow: #00b4ff;
+    
+    /* Dimensions */
+    --border-radius-lg: 24px;
+    --border-radius-md: 16px;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    
+    /* Effects */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* New skull theme colors */
+    --skull-glow: rgba(255, 0, 0, 0.2);
+    --dark-ember: rgba(255, 30, 0, 0.1);
+    --ember-glow: rgba(255, 50, 0, 0.15);
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(
+        rgba(10, 12, 18, 0.6),
+        rgba(10, 12, 18, 0.7)
+    ),
+    url('https://cdn.fastly.steamstatic.com/steamcommunity/public/images/items/573210/666974d94dc7e370f8cb279fd986ff477f00ccb7.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--primary-color);
+    line-height: 1.6;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.025) 0%, transparent 25%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.025) 0%, transparent 25%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: var(--spacing-lg);
+    position: relative;
+}
+
+/* Glass Effect */
+.glass {
+    background: linear-gradient(
+        165deg,
+        rgba(10, 12, 18, 0.95) 0%,
+        rgba(20, 20, 20, 0.92) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass::before,
+.glass::after {
+    display: none;
+}
+
+.glass .ember-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glass .ember-particles::before,
+.glass .ember-particles::after {
+    content: '🔥';
+    position: absolute;
+    font-size: 10px;
+    opacity: 0;
+    animation: ember 4s infinite;
+}
+
+.glass .ember-particles::before { left: 20%; animation-delay: 0s; }
+.glass .ember-particles::after { left: 80%; animation-delay: 2s; }
+
+@keyframes ember {
+    0% { 
+        opacity: 0;
+        transform: translateY(100%) rotate(0deg);
+    }
+    50% { 
+        opacity: 0.3;
+        transform: translateY(50%) rotate(180deg);
+    }
+    100% { 
+        opacity: 0;
+        transform: translateY(0%) rotate(360deg);
+    }
+}
+
+.glass:hover::before {
+    left: 100%;
+}
+
+/* Profile Section */
+.profile-section {
+    text-align: center;
+    position: relative;
+    background: linear-gradient(
+        145deg,
+        rgba(25, 25, 25, 0.95) 0%,
+        var(--container-bg) 100%
+    );
+}
+
+.profile-image {
+    margin: -1rem -1rem 1.5rem -1rem;
+    padding: 2rem;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.03),
+        transparent
+    );
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.profile-image img {
+    width: 180px;
+    height: 180px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition);
+    filter: brightness(0.95);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.profile-image:hover img {
+    transform: scale(1.02);
+    filter: brightness(1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Add blue fire effect to profile image */
+.profile-image::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 10px;
+    background: linear-gradient(
+        var(--dark-fire),
+        transparent
+    );
+    filter: blur(8px);
+    animation: flicker 3s infinite alternate;
+    opacity: 0.3;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+}
+
+/* Stats Container */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+    background: linear-gradient(
+        to bottom,
+        rgba(20, 20, 20, 0.95),
+        rgba(10, 10, 10, 0.98)
+    );
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 -1.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    position: relative;
+}
+
+/* First three items take top row */
+.stat-item:nth-child(-n+3) {
+    grid-column: span 1;
+}
+
+/* Last two items centered in bottom row */
+.stat-item:nth-child(4) {
+    grid-column: 1 / 2;
+    grid-row: 2;
+    justify-self: end;
+}
+
+.stat-item:nth-child(5) {
+    grid-column: 2 / 3;
+    grid-row: 2;
+    justify-self: start;
+}
+
+.stat-item:nth-child(n+4) {
+    transform: translateX(50%); /* Center the bottom items */
+}
+
+.stat-item {
+    position: relative;
+    text-align: center;
+    padding: 0.75rem;
+    transition: var(--transition);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: var(--text-glow);
+    color: var(--primary-color);
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Remove the after pseudo-element since we're using grid layout */
+.stat-item::after {
+    display: none;
+}
+
+/* Responsive adjustments for stats */
+@media (max-width: 480px) {
+    .stats-container {
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* Social Links */
+.social-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-decoration: none;
+    color: var(--primary-color);
+    background: linear-gradient(
+        145deg,
+        rgba(20, 20, 20, 0.95),
+        rgba(10, 10, 10, 0.98)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    height: 72px;
+    transition: var(--transition);
+    box-shadow: 0 0 15px rgba(32, 87, 255, 0.1);
+}
+
+.social-btn:hover {
+    background: var(--hover-bg);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--blue-fire);
+    box-shadow: 0 0 20px rgba(32, 87, 255, 0.2);
+}
+
+.social-btn i, .social-btn svg {
+    font-size: 1.35rem;
+    margin-right: var(--spacing-md);
+    width: 24px;
+    transition: var(--transition);
+}
+
+.social-btn:hover i, .social-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* Trade Button */
+.trade-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) calc(var(--spacing-lg) * 1.4);
+    background: linear-gradient(
+        45deg,
+        var(--gradient-start),
+        var(--gradient-end)
+    );
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--container-border);
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.trade-btn:hover {
+    background: var(--hover-bg);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.trade-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+    );
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.trade-btn:hover::after {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    margin-bottom: var(--spacing-md);
+    text-shadow: var(--text-glow);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+h1 { 
+    font-size: 2.5rem; 
+    background: linear-gradient(to right, 
+        var(--primary-color),
+        var(--dark-fire-glow)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px var(--dark-fire);
+}
+
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+
+.bio {
+    color: var(--secondary-color);
+    margin: var(--spacing-md) 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: var(--spacing-md);
+    }
+
+    .profile-section {
+        position: relative;
+        top: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-lg: 1.5rem;
+        --spacing-md: 0.75rem;
+    }
+
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .glass {
+        padding: var(--spacing-md);
+    }
+
+    h1 { font-size: 2rem; }
+    
+    .profile-image img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .social-btn {
+        height: 60px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+/* Add these styles to your existing CSS */
+
+.trade-info {
+    background: linear-gradient(
+        165deg,
+        rgba(25, 25, 25, 0.95) 0%,
+        var(--container-bg) 100%
+    );
+}
+
+.trade-info ul {
+    list-style: none;
+    width: 100%;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.trade-info li {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(
+        90deg,
+        rgba(20, 20, 20, 0.95),
+        rgba(10, 10, 10, 0.98)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.trade-info li:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.trade-info li i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 0.5rem;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .trade-info li {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .trade-info li i {
+        font-size: 1rem;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Add torch effect to corners */
+.container::before,
+.container::after {
+    display: none;
+}
+
+/* Add floating skull background */
+.background-skulls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Create multiple skull layers */
+.skull-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.skull-layer:nth-child(1)::before {
+    content: '💀';
+    font-size: 300px;
+    opacity: 0.04;
+    filter: blur(2px) grayscale(100%);
+}
+
+.skull-layer:nth-child(2)::before {
+    content: '☠️';
+    font-size: 250px;
+    opacity: 0.035;
+    filter: blur(1.5px) grayscale(100%);
+}
+
+.skull-layer:nth-child(3)::before {
+    content: '💀';
+    font-size: 350px;
+    opacity: 0.03;
+    filter: blur(2.5px) grayscale(100%);
+}
+
+/* Smoke effect */
+.smoke-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.smoke {
+    position: absolute;
+    width: 600px;
+    height: 150px;
+    background: radial-gradient(ellipse at center, 
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.03) 40%,
+        rgba(255, 255, 255, 0.01) 60%,
+        transparent 100%
+    );
+    border-radius: 100%;
+    filter: blur(30px);
+    mix-blend-mode: screen;
+}
+
+/* Position smoke clouds throughout the page */
+.smoke:nth-child(1) { top: 10%; animation: waftSmoke1 40s linear infinite; }
+.smoke:nth-child(2) { top: 30%; animation: waftSmoke2 35s linear infinite; }
+.smoke:nth-child(3) { top: 50%; animation: waftSmoke1 38s linear infinite; }
+.smoke:nth-child(4) { top: 70%; animation: waftSmoke2 42s linear infinite; }
+.smoke:nth-child(5) { top: 90%; animation: waftSmoke1 37s linear infinite; }
+.smoke:nth-child(6) { top: 20%; animation: waftSmoke2 39s linear infinite; }
+.smoke:nth-child(7) { top: 40%; animation: waftSmoke1 41s linear infinite; }
+.smoke:nth-child(8) { top: 60%; animation: waftSmoke2 36s linear infinite; }
+.smoke:nth-child(9) { top: 80%; animation: waftSmoke1 43s linear infinite; }
+.smoke:nth-child(10) { top: 25%; animation: waftSmoke2 38s linear infinite; }
+
+@keyframes waftSmoke1 {
+    0% {
+        transform: translateX(-100%) translateY(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(50vw) translateY(-50px);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100vw) translateY(0);
+        opacity: 0;
+    }
+}
+
+@keyframes waftSmoke2 {
+    0% {
+        transform: translateX(100vw) translateY(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(50vw) translateY(50px);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%) translateY(0);
+        opacity: 0;
+    }
+}
+
+/* Update social button text layout */
+.social-btn .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.social-btn .text-content span {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.social-btn .text-content small {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* Add smoldering animation */
+@keyframes smolder {
+    0%, 100% { 
+        opacity: 0.2;
+        transform: scale(1) rotate(0deg);
+    }
+    50% { 
+        opacity: 0.3;
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* Add this to containers for extra effect */
+.glass:hover::after {
+    animation: smolder 3s infinite ease-in-out;
+}
+
+/* Add skull decoration to profile image */
+.profile-image::before {
+    display: none;
+}
+
+/* Update trade button skull */
+.trade-btn::before {
+    display: none;
+}
+
+/* More subtle floating animations */
+@keyframes subtleFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-3px) rotate(2deg); }
+}
+
+@keyframes subtleSkullFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-3px); }
+}
+
+/* Add floating skull animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(5deg); }
+}
+
+/* Add creepy text glow effect to headings */
+h1, h2, h3, h4 {
+    animation: creepyGlow 4s infinite;
+}
+
+@keyframes creepyGlow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(0, 0, 255, 0.3); }
+}
+
+/* Add blood drip effect to containers */
+.glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 0, 0, 0.2) 50%,
+        transparent 100%
+    );
+    animation: bloodDrip 10s infinite;
+}
+
+@keyframes bloodDrip {
+    0% { transform: scaleX(0.95); opacity: 0.1; }
+    50% { transform: scaleX(1.05); opacity: 0.3; }
+    100% { transform: scaleX(0.95); opacity: 0.1; }
+}
+
+/* Add floating particles effect */
+.background-elements::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(255, 0, 0, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(0, 0, 255, 0.02) 0%, transparent 50%);
+    animation: floatParticles 20s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes floatParticles {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-10px, -10px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Add creepy hover effect to social buttons */
+.social-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.social-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 0, 0, 0.1),
+        rgba(0, 0, 255, 0.1),
+        transparent
+    );
+    transform: skewX(-15deg);
+    transition: 0.5s;
+}
+
+.social-btn:hover::after {
+    left: 100%;
+    transition: 0.7s;
+}
+
+/* Add pulsing effect to stats */
+.stat-value {
+    animation: statPulse 3s infinite;
+}
+
+@keyframes statPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Add scanlines effect */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 0, 0, 0.05) 51%,
+        transparent 51%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.2;
+}
+
+/* Add vignette effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.4) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Add flickering effect to profile image */
+.profile-image img {
+    animation: imageFlicker 8s infinite;
+}
+
+@keyframes imageFlicker {
+    0%, 100% { filter: brightness(0.95) contrast(1); }
+    92% { filter: brightness(0.95) contrast(1); }
+    93% { filter: brightness(1.2) contrast(0.9); }
+    94% { filter: brightness(0.95) contrast(1); }
+    96% { filter: brightness(1.1) contrast(0.9); }
+    97% { filter: brightness(0.95) contrast(1); }
+}
+
+/* Add creepy shadow effect to containers */
+.glass {
+    box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(255, 0, 0, 0.1);
+    animation: shadowPulse 5s infinite;
+}
+
+@keyframes shadowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 0, 0, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 255, 0.1); }
+}
+
+/* Enhanced skull effects */
+.skull-layer:nth-child(1)::before { content: '💀'; font-size: 400px; top: 10%; left: 5%; }
+.skull-layer:nth-child(2)::before { content: '☠️'; font-size: 300px; top: 40%; right: 5%; }
+.skull-layer:nth-child(3)::before { content: '💀'; font-size: 350px; top: 70%; left: 15%; }
+.skull-layer::after {
+    content: '☠️';
+    position: absolute;
+    font-size: 250px;
+    opacity: 0.02;
+    filter: blur(2px) grayscale(100%);
+    animation: floatSkull 20s infinite linear;
+}
+
+/* Add more skull layers with different positions */
+.skull-layer:nth-child(1)::after { top: 30%; right: 10%; animation-delay: -5s; }
+.skull-layer:nth-child(2)::after { top: 60%; left: 20%; animation-delay: -10s; }
+.skull-layer:nth-child(3)::after { top: 20%; right: 25%; animation-delay: -15s; }
+
+@keyframes floatSkull {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateY(-30px) rotate(10deg) scale(1.1); }
+    100% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+/* Remove previous flash effect */
+.lightning::after {
+    display: none;
+}
+ 
