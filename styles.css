@@ -3,23 +3,21 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Desktop zoom effect - preserve all other styles */
 @media screen and (min-width: 1024px) {
     html, body {
-        overflow: hidden; /* Only hide overflow on desktop */
+        overflow-x: hidden;
+        overflow-y: auto;
     }
     
     body {
-        transform: scale(0.67);
-        transform-origin: top left;
-        width: 149.25373134328358%;
-        height: 149.25373134328358%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow-x: hidden;
+        position: relative;
+        width: 100%;
+        height: 100%;
     }
 
     .page-wrapper {
@@ -36,13 +34,16 @@ html, body {
 /* Mobile styles */
 @media screen and (max-width: 1023px) {
     html, body {
-        overflow-x: hidden; /* Prevent horizontal scroll */
-        overflow-y: auto; /* Allow vertical scroll */
-        height: auto; /* Allow content to determine height */
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        width: 100%;
     }
 
     .container {
         padding: var(--spacing-md);
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -981,6 +982,64 @@ body::after {
         background-position: center;
         background-repeat: no-repeat;
         z-index: -1;
+    }
+}
+
+/* Update smoke container for mobile */
+@media screen and (max-width: 1023px) {
+    /* Hide smoke effects on mobile */
+    .smoke-container,
+    .background-skulls,
+    .background-elements,
+    .scanlines {
+        display: none;
+    }
+
+    /* Simplify background for better mobile performance */
+    body {
+        background: var(--background-color);
+    }
+    
+    /* Add a simpler gradient overlay */
+    body::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 12, 18, 0.9),
+            rgba(10, 12, 18, 0.95)
+        );
+        background-attachment: scroll;
+    }
+
+    /* Ensure container is properly sized */
+    .container {
+        width: 100%;
+        margin: 1rem auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    /* Improve text rendering */
+    * {
+        text-rendering: optimizeLegibility;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    /* Remove any transforms or effects that might cause blur */
+    .glass {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+/* Update mobile background handling */
+@media screen and (max-width: 1023px) {
+    body {
+        background-image: none; /* Remove background image on mobile */
+    }
+    
+    .glass {
+        background: rgba(20, 20, 20, 0.95); /* Solid background instead of glass effect */
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 }
  
