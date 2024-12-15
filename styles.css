@@ -1042,4 +1042,71 @@ body::after {
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
 }
+
+/* Add these styles for the editable info field */
+.editable-info {
+    margin-top: 1.5rem;
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.info-text {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem;
+    min-height: 60px;
+    color: var(--secondary-color);
+    transition: var(--transition);
+    flex-grow: 1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.info-text:focus {
+    outline: none;
+    border-color: var(--blue-fire);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--primary-color);
+}
+
+.info-text:empty::before {
+    content: 'Click to edit your info...';
+    color: var(--secondary-color);
+    opacity: 0.5;
+}
+
+.save-info {
+    background: transparent;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    opacity: 0;
+}
+
+.editable-info:hover .save-info,
+.info-text:focus + .save-info {
+    opacity: 1;
+}
+
+.save-info:hover {
+    color: var(--blue-fire);
+    transform: scale(1.1);
+}
+
+@media (max-width: 480px) {
+    .save-info {
+        opacity: 1; /* Always show save button on mobile */
+    }
+    
+    .info-text {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+}
  

@@ -116,3 +116,32 @@ fetchCSRepData();
 
 // Update every 5 minutes
 setInterval(fetchCSRepData, 300000);
+
+// Add this function near the top of your script.js
+async function fetchInfoText() {
+    try {
+        const response = await fetch('info.json');
+        const data = await response.json();
+        const infoText = document.querySelector('.info-text');
+        if (infoText && data.infoText) {
+            infoText.textContent = data.infoText;
+        }
+    } catch (error) {
+        console.error('Error loading info text:', error);
+        // Fallback text if json fails to load
+        document.querySelector('.info-text').textContent = 'Error loading info...';
+    }
+}
+
+// Update the DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const infoText = document.querySelector('.info-text');
+    const saveButton = document.querySelector('.save-info');
+    
+    // Load info from JSON instead of localStorage
+    fetchInfoText();
+    
+    // Remove localStorage related code since we're using JSON file now
+    saveButton.style.display = 'none'; // Hide save button since we're not saving
+    infoText.setAttribute('contenteditable', 'false'); // Make text non-editable
+});
